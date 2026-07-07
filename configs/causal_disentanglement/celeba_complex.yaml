@@ -1,0 +1,22 @@
+dataset: celeba_complex
+classifier_config: counterfactual_benchmark/methods/deepscm/configs/celeba/complex/classifier.json
+models:
+  vae:
+    config: counterfactual_benchmark/methods/deepscm/configs/celeba/complex/vae.json
+    gpu: 1
+    h_rt: "08:00:00"
+    h_rss: "8G"
+  hvae:
+    config: counterfactual_benchmark/methods/deepscm/configs/celeba/complex/hvae.json
+    gpu: 1
+    h_rt: "34:00:00"
+    h_rss: "24G"
+  gan:
+    config: counterfactual_benchmark/methods/deepscm/configs/celeba/complex/gan.json
+    gpu: 1
+    h_rt: "14:00:00"
+    h_rss: "12G"
+metrics:
+  num_samples: 1000
+  cg_samples: 500
+  batch_size: 64

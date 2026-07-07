@@ -176,5 +176,22 @@ cython_debug/
 #.idea/
 
 .pt
+.pth
+.ckpt
+.safetensors
+.npz
+.npy
 .png
 lightning_logs/
+wandb/
+training_images*/
+counterfactual_benchmark/methods/deepscm/checkpoints/**/trained_scm/
+counterfactual_benchmark/methods/deepscm/checkpoints/**/trained_uncond_vae/
+results/raw/*
+results/tables/*
+results/figures/*
+!results/raw/.gitkeep
+!results/tables/.gitkeep
+!results/figures/.gitkeep
+*.out
+*.err

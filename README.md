@@ -166,6 +166,69 @@ You can download from this google drive folder: https://drive.google.com/drive/f
 ## How good is your counterfactual image generation?
 ![image](https://github.com/gulnazaki/counterfactual-benchmark/assets/57211914/ed125278-9c79-467d-9852-4693b319d91a)
 
+## Causal Disentanglement Metrics Extension
+
+This branch adds a separate `causal_disentanglement_metrics/` package for evaluating whether learned image representations are causally disentangled and whether that predicts counterfactual generation quality. The original benchmark training and existing metric code are left unchanged.
+
+New metrics:
+
+- `CDM`: adapted from An et al., "Causally Disentangled Generative Variational AutoEncoder" (arXiv:2302.11737). CDM is implemented with top-layer, layer-wise, and full-hierarchy HVAE options, plus `direct` and `total` latent-effect variants. The counterfactual generativeness interpretation assumes faithful anti-causal predictors.
+- `UC`: adapted from Reddy et al., "On Causally Disentangled Representations" (AAAI 2022). The implementation discovers factor-to-latent mappings with an IRS-style intervention procedure and computes one minus mean Jaccard overlap.
+- `CG`: adapted from the same Reddy et al. paper. It compares factor-specific latent interventions against interventions on the complement set of latents.
+
+Key files:
+
+```
+causal_disentanglement_metrics/
+├── cdm.py
+├── uc.py
+├── cg.py
+├── latent_intervention.py
+├── factor_mapping.py
+└── run_metrics.py
+analysis/
+├── correlation_analysis.py
+├── visualization.py
+└── ablation_experiment.py
+configs/causal_disentanglement/
+scripts/eddie-cluster/
+results/{raw,tables,figures}/
+```
+
+Reference repositories should be cloned as siblings of this repository, not inside it:
+
+```
+git clone https://github.com/an-seunghwan/CDG-VAE.git ../CDG-VAE
+git clone https://github.com/causal-disentanglement/causal-disentanglement.github.io.git ../CANDLE
+```
+
+At setup time on 2026-07-07, the CANDLE URL returned "Repository not found"; keep this noted in the dissertation log and use any corrected upstream URL if the project has moved.
+
+### Run the New Metrics
+
+After the benchmark checkpoints and anti-causal predictors exist, run:
+
+```
+python -m causal_disentanglement_metrics.run_metrics \
+  --config counterfactual_benchmark/methods/deepscm/configs/morphomnist/hvae.json \
+  --classifier-config counterfactual_benchmark/methods/deepscm/configs/morphomnist/classifier.json \
+  --model-name hvae \
+  --dataset-name morphomnist \
+  --output-dir results/raw
+```
+
+For a quick implementation smoke test, add `--num-samples 16 --cg-samples 8 --max-dims-per-layer 2`.
+
+### Eddie Scratch Workflow
+
+The Eddie scripts live in `scripts/eddie-cluster/`, while mutable state defaults to scratch:
+
+```
+EDDIE_SCRATCH_ROOT=/exports/eddie/scratch/$USER/counterfactual-benchmark-cdm
+```
+
+This scratch root stores venvs, datasets, checkpoints, logs, runtime configs, raw metric outputs, tables, and figures. Large model weights and generated images are ignored by git and should be regenerated from the committed scripts/configs.
+
 
 ## Citation
 ```

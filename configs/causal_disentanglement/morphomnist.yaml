@@ -1,0 +1,22 @@
+dataset: morphomnist
+classifier_config: counterfactual_benchmark/methods/deepscm/configs/morphomnist/classifier.json
+models:
+  vae:
+    config: counterfactual_benchmark/methods/deepscm/configs/morphomnist/vae.json
+    gpu: 1
+    h_rt: "06:00:00"
+    h_rss: "8G"
+  hvae:
+    config: counterfactual_benchmark/methods/deepscm/configs/morphomnist/hvae.json
+    gpu: 1
+    h_rt: "14:00:00"
+    h_rss: "16G"
+  gan:
+    config: counterfactual_benchmark/methods/deepscm/configs/morphomnist/gan.json
+    gpu: 1
+    h_rt: "08:00:00"
+    h_rss: "8G"
+metrics:
+  num_samples: 1000
+  cg_samples: 500
+  batch_size: 128

@@ -1,0 +1,22 @@
+dataset: adni
+classifier_config: counterfactual_benchmark/methods/deepscm/configs/adni/classifier.json
+models:
+  vae:
+    config: counterfactual_benchmark/methods/deepscm/configs/adni/vae.json
+    gpu: 1
+    h_rt: "10:00:00"
+    h_rss: "12G"
+  hvae:
+    config: counterfactual_benchmark/methods/deepscm/configs/adni/hvae.json
+    gpu: 1
+    h_rt: "34:00:00"
+    h_rss: "24G"
+  gan:
+    config: counterfactual_benchmark/methods/deepscm/configs/adni/gan.json
+    gpu: 1
+    h_rt: "16:00:00"
+    h_rss: "12G"
+metrics:
+  num_samples: 1000
+  cg_samples: 500
+  batch_size: 64
