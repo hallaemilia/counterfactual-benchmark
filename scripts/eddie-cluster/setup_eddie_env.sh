@@ -37,7 +37,14 @@ if sys.version_info[:2] != (3, 10):
     )
 PY
 python -m pip install --upgrade "pip<26" wheel "setuptools<70"
-PIP_NO_BUILD_ISOLATION=1 python -m pip install -r "$PROJECT_DIR/requirements.txt"
+
+# OpenAI CLIP's pinned source distribution imports pkg_resources in setup.py.
+# Install it outside pip build isolation so it can see the setuptools version
+# above, then install the remaining requirements from a filtered file.
+FILTERED_REQUIREMENTS="$EDDIE_SCRATCH_ROOT/run_configs/requirements-no-clip.txt"
+grep -v '^clip @' "$PROJECT_DIR/requirements.txt" > "$FILTERED_REQUIREMENTS"
+python -m pip install --no-build-isolation "clip @ git+https://github.com/openai/CLIP.git@a1d071733d7111c9c014f024669f959182114e33"
+python -m pip install --no-build-isolation -r "$FILTERED_REQUIREMENTS"
 
 echo "Environment ready:"
 echo "PROJECT_DIR=$PROJECT_DIR"
